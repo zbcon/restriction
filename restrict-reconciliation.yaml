@@ -1,20 +1,20 @@
----
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: restrict-reconciliation
+#---
+#apiVersion: v1
+#kind: Namespace
+#metadata:
+#  name: restrict-reconciliation
 ---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: restriction-sa
-  namespace: restrict-reconciliation
+  name: flux-apps
+#  namespace: Overwritten by 'targetNamespace'
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
-  name: restriction-role
-  namespace: restrict-reconciliation
+  name: flux-app-reconciler
+#  namespace: Overwritten by 'targetNamespace'
 rules:
   - apiGroups: ['*']
     resources: ['*']
@@ -23,13 +23,12 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
-  name: restriction-rolebinding
-  namespace: restrict-reconciliation
+  name: flx-app-reconciler
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
-  name: restriction-role
+  name: flux-app-reconciler
 subjects:
 - kind: ServiceAccount
-  name: restriction-role
-  namespace: restrict-reconciliation
+  name: flux-apps
+#  namespace: Overwritten by 'targetNamespace'
